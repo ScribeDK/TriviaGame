@@ -58,19 +58,29 @@ function timer(){
 	//if the player runs out of time
 	if (count <= 0 && game == true)
 	{
+		//turn off timer
 		clearInterval(counter);
+		//count that no guess was made
 		noGuess = noGuess + 1;
+		//send player did not guess message
 		$(".triviaBox").html("<br><br><br><h3>You did not answer in time.</h3>")
+		//set timer for answer display time
 		game = false;
 		count = answerTime;
 		return answerDisplay();
 	}
 	
 	//Finish showing question answer
-	if (count <= 0 && game == false){	
+	if (count <= 0 && game == false){
+		
+		//turn off timer
 		clearInterval(counter);
+		
+		//set timer for question display time
 		game = true
 		count = questionTime;
+		
+		//check if last question
 		if(questNum <= 9){
 		return question();
 		}
@@ -80,16 +90,23 @@ function timer(){
 
 function answerDisplay(){
 	
+	//set timer for answer display time	
 	game = false;
 	count = answerTime;
 	
+	//display answer to HTML
 	$(".triviaBox").append(AnswerList[questNum]);
+	
+	//increase question number for next question
 	questNum = questNum + 1;
+	
+	//turn timer on
 	return startTimer();
 	
 }
 
 function question(){
+	
 	//send question to html
 	$(".triviaBox").html(QuestionList[questNum]);		
 	
@@ -108,7 +125,10 @@ function question(){
 			else{ wrong = wrong + 1; 
 			$(".triviaBox").html("<br><br><br><h3>Your answer was wrong.</h3>")
 			}
+			
+			//turn timer off
 			clearInterval(counter);
+			
 			return answerDisplay();
 	});	
 }
