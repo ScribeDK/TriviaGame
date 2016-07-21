@@ -5,6 +5,10 @@ var noGuess = 0;
 //countdown timer vars
 var counter;
 var count = 15;
+//amount of time for questions and answers
+var answerTime = 7;
+var questionTime = 15;
+//is the player answering a question (true) or seeing an answer (false)
 var game = true;
 //track current question
 var questNum = 0;
@@ -32,9 +36,12 @@ AnswerList = ["<h2>The answer was Christopher Pike</h2><img src='assets/images/C
 
 
 //start the game
-question();
+$('.answer').on('click', function() {
+	question();
+});	
 
 
+//start timer function
 function startTimer(){
 	//timer interval = one second
 	counter = setInterval(timer, 1000);
@@ -48,19 +55,22 @@ function timer(){
 	//send time to timer
 	$(".timer").text(''+count);
 	
+	//if the player runs out of time
 	if (count <= 0 && game == true)
 	{
 		clearInterval(counter);
 		noGuess = noGuess + 1;
 		$(".triviaBox").html("<br><br><br><h3>You did not answer in time.</h3>")
 		game = false;
-		count = 7;
+		count = answerTime;
 		return answerDisplay();
 	}
+	
+	//Finish showing question answer
 	if (count <= 0 && game == false){	
 		clearInterval(counter);
 		game = true
-		count = 15;
+		count = questionTime;
 		if(questNum <= 9){
 		return question();
 		}
@@ -69,10 +79,10 @@ function timer(){
 }
 
 function answerDisplay(){
-	game = false;
-	count = 7;
 	
-	//$(".triviaBox").html("<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>");
+	game = false;
+	count = answerTime;
+	
 	$(".triviaBox").append(AnswerList[questNum]);
 	questNum = questNum + 1;
 	return startTimer();
@@ -91,7 +101,7 @@ function question(){
 			//check if answer is correct
 			var playerAns = ($(this).attr('data-tag'));
 			if (eval(playerAns) == true){
-				correct = correct +1;
+				correct = correct + 1;
 				$(".triviaBox").html("<br><br><br><h3>You where right.</h3>")
 			}
 			//else answer was wrong
